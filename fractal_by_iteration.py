@@ -52,7 +52,7 @@ class Fractal(object):
             z = self.iter_func(z, c)
             num += 1
             if abs(z) > 20 * self.convergence_radius:
-                return (sigmoid(np.abs(z)) - 0.5) * 100 + 1
+                return (sigmoid(np.abs(z)) - 0.5) * 40 + 1
         return 0
 
     # def display_mandelbrot(self, x_num=1000, y_num=1000):
@@ -94,7 +94,7 @@ class Fractal(object):
         plt.show()
         # plt.savefig()
 
-    def save_pic(self, name, center, scale, x_num=1000, y_num=1000, dpi=600):
+    def save_pic(self, name, center, scale, x_num=1000, y_num=1000, dpi=600, reverse_color=False):
 
         ratio = 1920/1080
         X, Y = np.meshgrid(np.linspace(center[0] - 2/scale * ratio, center[0] + 2/scale * ratio, x_num+1),
@@ -107,11 +107,13 @@ class Fractal(object):
                 print('i = %d, j = %d:\t' % (i, j))
                 result[i, j] = self.calc_steps(C[i, j])
         result = (result - result.min()) / (result.max() - result.min()) * result.max()
+        if reverse_color:
+            result = result.max() - result
 
         # fig, ax = plt.subplots()
-        im = plt.imshow(result, interpolation='bilinear', # cmap=plt.cm.hot, #cmap=plt.cm.RdYlBu,
-                       origin='lower', extent=[X.min(), X.max(), Y.min(), Y.max()],
-                       vmax=abs(result).max(), vmin=abs(result).min(), animated=True)
+        plt.imshow(result, interpolation='bilinear', # cmap=plt.cm.winter,
+                   origin='lower', extent=[X.min(), X.max(), Y.min(), Y.max()],
+                   vmax=abs(result).max(), vmin=abs(result).min(), animated=True)
         plt.subplots_adjust(left=0.0, right=1, wspace=0.25, hspace=0.25, bottom=0.00, top=1)
         plt.savefig(self.save_path+name, dpi=dpi)
 
@@ -125,7 +127,7 @@ if __name__ == "__main__":
 
     frac = Fractal(iter_func=lambda z, b: b ** z, max_iter_num=64, convergence_radius=500, z0=1, calc_method=1)
     center = -0.484532, 0.667015
-    scale = 1281
+    scale = 1281.8 * 0.8
 
     # frac.plot_zoom_in(center, scale, ratio=1920/1080, x_num=108 * 2, y_num=192 * 2)
-    frac.save_pic('frac_0.png', center=(0,0), scale=0.8, x_num=108 * 50, y_num=192 * 50, dpi=1500)
+    frac.save_pic('frac_12.png', center=center, scale=scale, x_num=108 * 40, y_num=192 * 40, dpi=750)
