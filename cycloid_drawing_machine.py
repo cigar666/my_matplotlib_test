@@ -80,12 +80,19 @@ class MyCurve(Container):
             c = my_curve(t, self.r_list, w_list, self.phi_list, self.P_list)
             x, y = c.real, c.imag
         fig, ax = plt.subplots()
-        ax.plot(x, y, linewidth =0.5)
+        ax.plot(x, y, linewidth=0.4)
         ax.set_aspect('equal', 'box')
         plt.show()
 
 if __name__ == "__main__":
 
-    mc = MyCurve(rotate_or_not=True)
+    # mc = MyCurve(P_list=[complex(-4, 3.5), complex(3, 1)], r_list=[4, 1.8, 3.2, -5.4],
+    #              phi_list=[170 * DEGREES, -120 * DEGREES], T=[37, 29, 37 * 5],
+    #              rotate_or_not=True, precision_factor=10)
+
+    mc = MyCurve(P_list=[complex(-2, 2.4), complex(4, -3.)], r_list=[3.2, 1.5, 4.5, -3.2],
+                 phi_list=[170 * DEGREES, -120 * DEGREES], T=[31, 29, 31 * 5],
+                 rotate_or_not=True, precision_factor=2)
+
     mc.plot_my_curve()
 
